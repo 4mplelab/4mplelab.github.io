@@ -1,0 +1,9 @@
+---
+const { panel } = Astro.props;
+const sidebar = panel === 'sidebar';
+const name = sidebar ? 'メニュー' : '目次';
+---
+<button class={`edge-toggle edge-toggle--${panel}`} data-panel-toggle={panel} type="button" aria-expanded="true" aria-controls={sidebar ? 'starlight__sidebar' : 'guide-desktop-toc'} aria-label={`${name}を格納`} title={`${name}を格納`}>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d={sidebar ? 'm14 6-6 6 6 6' : 'm10 6 6 6-6 6'} /></svg>
+</button>
+<div class={`panel-resize panel-resize--${panel}`} data-panel-resize={panel} role="separator" aria-label={`${name}の幅`} aria-orientation="vertical" aria-controls={sidebar ? 'starlight__sidebar' : 'guide-desktop-toc'} aria-valuemin={sidebar ? 200 : 160} aria-valuemax={sidebar ? 390 : 292.5} aria-valuenow={sidebar ? 260 : 195} tabindex="0" title="ドラッグまたは矢印キーで幅を調整"></div>

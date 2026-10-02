@@ -1,0 +1,13 @@
+---
+const { name } = Astro.props;
+---
+<div class="product-placeholder" role="img" aria-label={`${name}の仮画像。製品画像は準備中です。`}>
+ <svg viewBox="0 0 120 64" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><rect x="16" y="10" width="88" height="44" rx="5"/><path d="m28 43 18-17 14 12 12-9 20 14"/><circle cx="80" cy="23" r="4"/></svg>
+ <span class="placeholder-name">{name}</span><span class="placeholder-note">IMAGE COMING SOON</span>
+</div>
+<style>
+ .product-placeholder { aspect-ratio:16/9; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; background:var(--canvas); border:1px dashed var(--border); border-radius:8px; color:var(--muted); }
+ svg { width:100px; height:auto; opacity:.45; }
+ .placeholder-name { font-size:26px; letter-spacing:.03em; }
+ .placeholder-note { font-size:10px; letter-spacing:.16em; }
+</style>

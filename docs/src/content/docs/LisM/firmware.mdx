@@ -1,0 +1,239 @@
+---
+slug: LisM/firmware
+title: ファームウェア
+description: LisMのファームウェア設定ガイド。使用するモジュールに合ったファームウェアの選択、書き込み、キーマップ変更を案内します。
+---
+
+LisMはZMKファームウェアを使用しています。  
+DYA Studioを使用しない場合、キーマップの変更やモジュールの構成変更にはファームウェアの書き換えが必要です。
+
+- **[zmk-config-LisM](https://github.com/4mplelab/zmk-config-LisM)**  
+
+:::note[組み立てOPのファームウェアは、DYA Studio対応板を導入済み]
+（2026/03販売分から）  
+ファームウェアの書き換えなしで、キーマップの変更が行える状態になっています。  
+:::
+
+---
+
+## セントラルとペリフェラル
+デフォルトでは、`右がセントラル`、`左がペリフェラル`です。  
+`build.yaml`を編集してビルドすることで逆にすることも可能です。
+
+---
+
+## 主な編集箇所
+
+- キーマップやコンボ  
+  `config/lism.keymap`を編集します。  
+  （KeymapEditorで変更できる内容です）
+
+- ハードウェア構成など  
+  `boards/`や`snippets/`内のファイルを編集します。  
+  （例えば、デュアルトラボで片側をスクロール固定にしたい場合など）
+
+---
+
+## ビルド済みファームウェア
+
+import FirmwareReleaseLinks from '../../../components/FirmwareReleaseLinks.astro';
+
+<FirmwareReleaseLinks />
+
+
+## モジュール構成とファームウェア
+
+左右それぞれのモジュールに合ったファームウェアを書き込んでください。左右は独立して選択できます。  
+`[c/p]`は`central` または `peripheral`。
+
+| モジュール | 左手側ファームウェア | 右手側ファームウェア |
+| :--- | :--- | :--- |
+| トラックボール | `lism_left_[c/p]_trackball.uf2` | `lism_right_[c/p]_trackball.uf2` |
+| 4wayスティック | `lism_left_[c/p]_4waystick.uf2` | `lism_right_[c/p]_4waystick.uf2` |
+| 非トラックボール[^1] | `lism_left_[c/p]_non_trackball.uf2` | `lism_right_[c/p]_non_trackball.uf2` |
+
+[^1]:「非トラックボール」モジュールには以下が含まれます。  
+    - 水平ロータリーエンコーダー  
+    - 垂直ロータリーエンコーダー  
+    - キースイッチ
+
+---
+
+import { Image } from 'astro:assets';
+import err1 from './img/write_fw_mac_err01.png';
+import err2 from './img/write_fw_mac_err02.png';
+
+## ファームウェアの書き込み手順
+
+ファームウェアを書き換えるには、キーボードを「ブートローダーモード」で起動し、PCに接続する必要があります。
+
+1. **USBケーブルでPCと接続する**
+   
+2.  **ブートローダーモードで起動する**  
+    以下の**いずれか**の方法でブートローダーモードにしてください。  
+    - 反対側のキーボードの外側1番下のキーを押しながら、ブートローダーモードにしたい側のキーボードの外側1番下キーを押します。  
+      ![Bootloaderキーの位置](img/bootloader_key.svg)
+    - キーボード底面のリセットボタンを**素早く2回**押します。  
+      ![bottom](img/boot_03.jpeg)
+    - XIAOのリセットボタンを**素早く2回**押します。  
+      ![xiao](img/boot_04.jpeg)
+  
+
+    成功すると、PC上にUSBドライブとして認識されます。
+
+3.  **ファームウェアファイルをコピーする**
+    - `.uf2` 形式のファームウェアファイルを、表示されたUSBドライブにドラッグ＆ドロップでコピーします。
+    - コピーが完了すると、キーボードは自動的に再起動します。
+
+    :::tip[macOSでは書き込み後に以下のメッセージが表示されますが、典型挙動で問題ありません]
+    これらのメッセージが表示されても正しく書き込まれています。  
+    <div class="grid-container">
+        <Image src={err1} alt="err" />
+        <Image src={err2} alt="err" />
+    </div>
+    :::
+
+--- 
+
+## キーマップの変更方法
+
+キーマップの変更には、主に以下の4つの方法があります。  
+ご自身の環境や好みに合わせて選択してください。
+
+
+|  | 方法 | 特徴 |
+| :--- | :--- | :--- |
+| 1 | DYA Studio | ファームウェアの書き換え不要でブラウザから様々な設定可能(トラボも可能) |
+| 2 | ローカルビルド | 環境構築が必要だが、変更→テストが試しやすい |
+| 3 | GitHub Actions | ブラウザで完結できる |
+| 4 | ZMK Studio | ファームウェアの書き換え不要でブラウザから様々な設定可能 |
+
+### 1. DYA Studio
+
+<div class="ogp-card-target no-style">
+  <a href="https://studio.dya.cormoran.works" target="_blank" rel="noopener noreferrer">DYA Studio</a>
+</div>
+
+[@cormoran707](https://x.com/cormoran707)さんが作成された素晴らしいキーマップ変更ツールです。  
+ファームウェアのビルド・書き換え不要でブラウザからキーマップ・エンコーダー・トラックボールなど各種設定を変更可能です。  
+ZMK Studioよりできることが多く、デザインや操作性に優れています。
+
+#### 専用ファームウェアが必要
+利用するには専用のファームウェアを使用する必要があります。  
+LisMでは別ブランチ(`dya-studio_zmk-v0.3`)にて用意しています。
+- [ブランチ (dya-studio_zmk-v0.3)](https://github.com/4mplelab/zmk-config-LisM/tree/dya-studio_zmk-v0.3)
+- [ビルド済みファームウェア](./#ビルド済みファームウェア)
+
+#### 機能や使用方法
+本家 [DYA Studio](https://studio.dya.cormoran.works)を参照。 
+
+:::note[初回接続時はロック解除が必要]
+セキュリティのため、接続直後のキーボードは操作がロックされています。  
+`Default Layer`の**最下段・一番外側のキー**（左右どちらでも可）を長押しして`Device Layer`に切り替え、**右手の親指キー**（鍵アイコン）を押すとロックが解除されます。  
+![Unlockキーの位置](img/studio_unlock_key.svg)
+:::
+
+:::caution[DYA Studioに関しての注意事項]
+- 現時点では実験的な機能とのことですので、自己責任にてご利用ください。
+- 当方は一切のサポートを致しかねます。
+- 使用できる専用ファームウェアは提供いたしますが、継続的に提供できるかは不明です。
+:::
+
+### 2. ローカル環境でのビルド
+
+ご自身のPCに[Docker](https://www.docker.com/products/docker-desktop/)と[VS Code](https://code.visualstudio.com/)を準備することで、最も手軽かつ高速にキーマップの試行錯誤ができます。  
+GitHubアカウントは不要で、一度環境を構築すれば、約30秒でビルドが完了します。
+
+**準備:**
+
+1.  **[Visual Studio Code](https://code.visualstudio.com/)** をインストールします。
+2.  **[Docker Desktop](https://www.docker.com/products/docker-desktop/)** をインストールし、起動しておきます。
+3.  VS Codeの拡張機能「**[Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)**」をインストールします。
+4.  [zmk-config-LisMリポジトリ](https://github.com/4mplelab/zmk-config-LisM) をPCにクローン（またはzipでダウンロードして展開）します。
+
+**手順:**
+
+1.  **Dev Containerの起動**
+    1.  クローンしたリポジトリのフォルダをVS Codeで開きます。
+    2.  画面右下に「Reopen in Container」という通知が表示されたら、そのボタンをクリックします。(初回起動時は環境構築のため数分かかります)
+
+2.  **キーマップの編集**  
+    コンテナ内の`config/lism.keymap`ファイルがキーマップの定義です。以下のいずれかの方法で編集します。
+
+    *   **Keymap Editorを利用する場合:**
+        1.  [Keymap Editor](https://nickcoutsos.github.io/keymap-editor/)を開きます。(GitHubでのサインインは不要です)
+        2.  `Source`から`Clipboard`を選択します。
+        3.  `Keyboard`から`New Keyboard`を選択します。
+        4.  `Keyboard`から`Custom`を選択し、`config/lism.json`を ドロップ（or 選択）します。
+        5.  `Keymap`の内容を削除し、`config/lism.keymap`をドロップ（or 内容をコピペ）します。
+        6.  エディタ上でキーマップを自由に作成・編集します。
+        7.  編集後、`Copy updated keymap`ボタンから`.keymap`ファイルの内容をコピーします。
+        8.  VS Codeで開いている`config/lism.keymap`ファイルに、コピーした内容を貼り付けて保存します。
+
+    *   **ファイルを直接編集する場合:**
+        VS Codeで`config/lism.keymap`を直接開き、[ZMKのキーコード](https://zmk.dev/docs/codes)を参考に編集します。
+
+3.  **ファームウェアのビルド**  
+    VS Codeのターミナル（`Terminal` > `New Terminal`）で、以下のいずれかのコマンドを実行します。
+    *   **`make`**: 通常のファームウェアを全てビルドします。
+    *   **`make single`**: ビルドしたいファームウェアを対話形式で選択します。
+    *   **`make all`**: ZMK Studio対応版を含む、全てのファームウェアをビルドします。
+
+4.  **ファームウェアの書き込み**  
+    ビルドが完了すると、`firmware_builds`フォルダ内に`.uf2`ファイルが生成されます。  
+    このファイルを、キーボードをブートローダーモードで起動して表示されるUSBドライブにコピーします。
+
+### 3. GitHub Actionsでのビルド
+
+GitHubアカウントをお持ちの場合、リポジトリをフォークしてGitHub Actionsでビルドすることも可能です。  
+PCに開発環境を構築する必要はありませんが、ビルドに数分かかります。
+
+<details class="details-card">
+    <summary>参考動画</summary>
+    基本的な流れは以下の動画が参考になります。
+    <div class="video-embed">
+      <iframe
+        src="https://www.youtube.com/embed/vXpV9jgRB1M?start=440"
+        title="GitHub Actionsでのビルド 参考動画"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>
+</details>
+
+**手順:**
+
+1.  **[zmk-config-LisM](https://github.com/4mplelab/zmk-config-LisM)をフォークします。**
+2.  **Actionsの有効化**  
+    フォークしたご自身のリポジトリの「Actions」タブを開き、「I understand my workflows, go ahead and enable them」ボタンを押してワークフローを有効化します。
+3.  **キーマップの編集**  
+    キーマップの編集は、Webブラウザ上で完結できます。
+
+    *   **Keymap Editorを利用する場合**  
+        [Keymap Editor](https://nickcoutsos.github.io/keymap-editor/)とご自身のGitHubアカウントを連携させることで、グラフィカルにキーマップを編集できます。  
+        編集後は、エディタの指示に従い変更をコミットしてください。
+
+    *   **ファイルを直接編集する場合**  
+        フォークしたリポジトリにある`config/lism.keymap`ファイルを、GitHub上で直接編集してコミットすることも可能です。
+4.  **ビルドの実行とダウンロード**  
+    変更をコミットすると、自動的にGitHub Actionsでビルドが開始されます。  
+    ビルドが完了したら、`Actions`→`Build ZMK firmware`→`最新のworkflow run`→`Artifacts`から`firmware`をダウンロードします。
+5.  **ファームウェアの書き込み**  
+    zipファイルを解凍し、中の`.uf2`ファイルをキーボードに書き込みます。
+
+### 4. ZMK Studioの利用 (非推奨)
+
+[ZMK Studio](https://zmk.studio/)は、キーマップをリアルタイムで変更できるWebアプリケーションです。  
+手軽ですが、ファームウェアのメモリ使用量が増加するため、予期せぬ不具合が発生する可能性があり、**この方法は推奨されません。**
+
+**手順:**
+
+1.  **Studio対応ファームウェアの入手**  
+    ビルドして生成された`..._studio.uf2`という名前のファームウェアを使用します。
+2.  **ファームウェアの書き込み**  
+    入手したStudio対応`.uf2`ファイルをキーボードに書き込みます。
+3.  **ZMK Studioでの設定**
+    1.  [ZMK Studio](https://zmk.studio/)にアクセスします。
+    2.  Web BluetoothまたはWeb Serialでキーボードに接続します。
+    3.  ロックを解除します。（ロック解除方法は[DYA Studio利用時の注意事項](#1-dya-studio)と同様です）
+    4.  画面の指示に従い、キーマップを編集します。変更は即座に反映されます。

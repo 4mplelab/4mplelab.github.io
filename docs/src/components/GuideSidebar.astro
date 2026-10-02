@@ -1,0 +1,36 @@
+---
+import GuideNavIcon from './GuideNavIcon.astro';
+const { sidebar } = Astro.locals.starlightRoute;
+---
+<ul class="guide-nav-list">
+  {sidebar.map((entry, index) => <li>
+    {entry.type === 'link' ? <a class="guide-nav-row" href={entry.href} aria-current={entry.isCurrent ? 'page' : undefined} title={entry.label} aria-label={entry.label}>
+      <GuideNavIcon index={index} /><span class="guide-nav-label">{entry.label}</span>
+    </a> : <details class="guide-nav-group" open>
+      <summary class="guide-nav-row" title={entry.label} aria-label={entry.label} data-guide-group>
+        <GuideNavIcon index={index} /><span class="guide-nav-label">{entry.label}</span><span class="guide-nav-caret" aria-hidden="true">⌄</span>
+      </summary>
+      <ul class="guide-nav-children">{entry.entries.map(child => child.type === 'link' && <li><a href={child.href} aria-current={child.isCurrent ? 'page' : undefined}>{child.label}</a></li>)}</ul>
+    </details>}
+  </li>)}
+</ul>
+<style is:global>
+  .guide-nav-list, .guide-nav-children { list-style:none; margin:0; padding:0; }
+  .guide-nav-list > li + li { margin-top:8px; }
+  .guide-nav-row { display:flex; gap:10px; align-items:center; min-height:40px; text-decoration:none; color:var(--muted); font-size:13px; }
+  .guide-nav-row .guide-nav-icon { flex-shrink:0; }
+  .sidebar-content summary.guide-nav-row { padding:8px 12px; border-radius:6px; cursor:pointer; list-style:none; }
+  .guide-nav-row::-webkit-details-marker { display:none; }
+  .guide-nav-row:hover { background:var(--soft); color:var(--text); }
+  .guide-nav-caret { margin-left:auto; }
+  .guide-nav-group:not([open]) .guide-nav-caret { transform:rotate(-90deg); }
+  .guide-nav-children { margin:4px 0 12px 20px; border-left:1px solid var(--border); padding-left:8px; }
+  .guide-nav-children a { display:block; text-decoration:none; color:var(--muted); font-size:12px; }
+  .guide-nav-group:has([aria-current='page']) > summary { color:var(--text); font-weight:700; }
+  @media(min-width:1024px) {
+    [data-sidebar-open='false'] .sidebar-content { padding-inline:8px; }
+    [data-sidebar-open='false'] :is(.guide-nav-label,.guide-nav-caret,.guide-nav-children) { display:none; }
+    [data-sidebar-open='false'] .guide-nav-row { justify-content:center; padding-inline:0; }
+    [data-sidebar-open='false'] .guide-nav-group:has([aria-current='page']) > summary { background:var(--text); color:var(--bg); }
+  }
+</style>

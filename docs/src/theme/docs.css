@@ -1,0 +1,179 @@
+@import './base.css';
+
+/* Preserve the original guide's 15px rem baseline. */
+html { font-size: 93.75%; }
+
+:root {
+  --sl-font: var(--site-font);
+  --guide-heading-accent: var(--accent);
+  --sl-content-width: 64rem;
+  --sl-sidebar-width: 19.5rem;
+  --guide-toc-width: 13rem;
+  --sl-nav-height: 4.75rem;
+  --sl-line-height: 1.85;
+  --sl-line-height-headings: 1.4;
+  --sl-text-h1: clamp(2rem, 3.5vw, 3rem);
+  --sl-text-h2: 2rem;
+  --sl-text-h3: 1.5rem;
+  --sl-text-h4: 1.125rem;
+}
+:root, :root[data-theme='light'] {
+  --sl-color-text: var(--text);
+  --sl-color-bg: var(--bg);
+  --sl-color-bg-nav: var(--header);
+  --sl-color-bg-sidebar: var(--bg);
+  --sl-color-hairline: var(--border);
+  --sl-color-hairline-light: var(--border);
+  --sl-color-hairline-shade: var(--border);
+  --sl-color-accent: var(--text);
+  --sl-color-accent-low: var(--soft);
+  --sl-color-accent-high: var(--text);
+  --sl-color-text-accent: var(--text);
+  --sl-color-text-invert: var(--bg);
+  --sl-color-bg-accent: var(--text);
+}
+:root {
+  --sl-color-white: #eeeeee;
+  --sl-color-gray-1: #dddddd;
+  --sl-color-gray-2: #bbbbbb;
+  --sl-color-gray-3: #aaaaaa;
+  --sl-color-gray-4: #777777;
+  --sl-color-gray-5: #3d3d3d;
+  --sl-color-gray-6: #222222;
+  --sl-color-gray-7: #1c1c1c;
+  --sl-color-black: #181818;
+}
+:root[data-theme='light'] {
+  --sl-color-white: #242424;
+  --sl-color-gray-1: #333333;
+  --sl-color-gray-2: #555555;
+  --sl-color-gray-3: #686868;
+  --sl-color-gray-4: #888888;
+  --sl-color-gray-5: #dddddd;
+  --sl-color-gray-6: #f3f3f3;
+  --sl-color-gray-7: #f8f8f8;
+  --sl-color-black: #ffffff;
+}
+/* Semantic colors share the same theme-aware palette as the homepage. */
+.starlight-aside--note { --notice-color: var(--note); }
+.starlight-aside--tip { --notice-color: var(--tip); }
+.starlight-aside--caution { --notice-color: var(--caution); }
+.starlight-aside--danger { --notice-color: var(--danger); }
+.starlight-aside {
+  --sl-color-asides-border: var(--notice-color);
+  --sl-color-asides-text-accent: var(--notice-color);
+}
+header.header { backdrop-filter: blur(16px); }
+.site-title { font-weight: 700; letter-spacing: -.04em; }
+.sidebar-content { font-size: .875rem; }
+.sidebar-content a { border-radius: 6px; }
+.sidebar-content a[aria-current='page'] {
+  background: var(--soft);
+  color: var(--text);
+  font-weight: 700;
+}
+.content-panel { padding-block: 2.5rem; }
+h1 { letter-spacing: 0; font-weight: 700; }
+/* Reading rhythm: spacious prose, distinct chapter and step headings. */
+.sl-markdown-content { font-size: 1rem; letter-spacing: .025em; line-height: var(--sl-line-height); }
+.sl-markdown-content h2 {
+  margin-top: 4.5rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--guide-heading-accent);
+  font-weight: 700;
+  letter-spacing: .015em;
+}
+.sl-markdown-content > h2:first-child { margin-top: 0; }
+.sl-markdown-content h3 {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.sl-markdown-content h3::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: .7em;
+  width: .65rem;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--guide-heading-accent);
+}
+.sl-markdown-content :is(h2, h3) + :is(p, ul, ol) { margin-top: 1rem; }
+/* Prose spacing must not affect tab/navigation lists marked not-content. */
+.sl-markdown-content li + li:not(:where(.not-content *)) { margin-top: .7rem; }
+.sl-markdown-content li > p + p { margin-top: 1rem; }
+.sl-markdown-content :is(pre, code) { letter-spacing: normal; }
+.sidebar-content a { line-height: 1.65; padding-block: .45rem; }
+.sl-markdown-content p { margin-top: 1.25rem; }
+.sl-markdown-content a:not(.not-content a) { text-underline-offset: .22em; }
+.sl-markdown-content img { border-radius: 8px; }
+.sl-markdown-content table { width: 100%; font-size: .9rem; line-height: 1.8; }
+.sl-markdown-content th { background: var(--soft); font-weight: 500; }
+.sl-markdown-content :is(td, th) { padding: .8rem 1rem; border-color: var(--border); }
+.starlight-aside { border-radius: 6px; box-shadow: none; padding: 1.1rem 1.25rem; }
+.starlight-aside .starlight-aside__title { font-size: 1rem; }
+starlight-tabs [role='tab'] { font-size: .9rem; padding: .8rem 1rem; }
+starlight-tabs [role='tab'][aria-selected='true'] { border-color: var(--text); }
+.pagination-links a { box-shadow: none; border-color: var(--border); border-radius: 8px; }
+@media (max-width: 50rem) {
+  :root { --sl-nav-height: 4rem; }
+  .content-panel { padding-block: 1.75rem; }
+  .sl-markdown-content h2 { margin-top: 3.5rem; }
+  .sl-markdown-content h3 { margin-top: 2.5rem; }
+}
+
+/* Tint only the background; keep warning text and icons fully opaque. */
+.starlight-aside {
+  background-color: color-mix(in srgb, var(--sl-color-asides-border) 8%, transparent);
+}
+
+/* Numbered steps use their own number instead of an extra decorative marker. */
+.sl-markdown-content .step-heading {
+  padding-left: 0;
+  border-left: 0;
+}
+.sl-markdown-content .step-heading::before { content: none; }
+.sl-markdown-content .step-number {
+  color: var(--on-accent);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.1em;
+  min-height: 2.1em;
+  padding: .2em .55em;
+  margin-inline-end: .65em;
+  border: 1px solid var(--guide-heading-accent);
+  border-radius: .45em;
+  background: var(--guide-heading-accent);
+  font-size: .75em;
+  line-height: 1.4;
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Give navigation and reading space independent desktop column widths. */
+@media (min-width: 72rem) {
+  [data-has-sidebar][data-has-toc] .right-sidebar-container {
+    flex: 0 0 var(--guide-toc-width);
+    width: var(--guide-toc-width);
+  }
+  [data-has-sidebar][data-has-toc] .right-sidebar {
+    width: var(--guide-toc-width);
+  }
+  [data-has-sidebar][data-has-toc] .right-sidebar-panel .sl-container {
+    width: 100%;
+    max-width: none;
+  }
+  [data-has-sidebar][data-has-toc] .main-pane {
+    flex: 1 1 0;
+    min-width: 0;
+    width: calc(100% - var(--guide-toc-width));
+    padding-inline: 1rem;
+    --sl-content-margin-inline: auto;
+  }
+}

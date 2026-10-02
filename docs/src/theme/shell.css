@@ -1,0 +1,105 @@
+/* UniStock's compact app frame, keeping Starlight's reading components. */
+:root, :root[data-theme='light'] {
+  --sl-nav-height: 64px;
+  --guide-sidebar-size: 260px;
+  --guide-toc-size: 195px;
+  --sl-sidebar-width: var(--guide-sidebar-size);
+  --guide-toc-width: var(--guide-toc-size);
+  --sl-color-bg: var(--surface);
+  --sl-color-bg-nav: var(--canvas);
+  --sl-color-bg-sidebar: var(--canvas);
+}
+header.header { padding:0 !important; backdrop-filter:none; border-bottom:0; }
+.sidebar-pane { background:var(--canvas); }
+.sidebar-content { padding:24px 16px; }
+.sidebar-content a { padding:8px 12px; border-radius:6px; font-weight:500; }
+.sidebar-content a[aria-current='page'] { background:var(--text); color:var(--bg); }
+.sidebar-content a:not([aria-current='page']):hover { background:var(--soft); }
+.sidebar-content .top-level > li + li { margin-top:16px; }
+.sidebar-content summary { padding:6px 8px; }
+.main-frame { padding-inline-start:0; }
+.main-frame .main-pane {
+  background:transparent;
+  border:0;
+  border-radius:0;
+  margin:24px;
+  padding:0;
+  min-width:0;
+  width:auto;
+}
+.content-panel { padding-inline:32px; }
+.right-sidebar { border-inline-start:0; }
+.sidebar-backdrop { position:fixed; inset:var(--sl-nav-height) 0 0; z-index:calc(var(--sl-z-index-menu) - 1); border:0; background:rgb(0 0 0 / .35); cursor:pointer; }
+.sidebar-backdrop[hidden] { display:none; }
+/* Compact search keeps all product destinations visible in the header. */
+.product-actions site-search button[data-open-modal] { width:32px; height:32px; padding:7px; border:0; background:transparent; }
+.product-actions site-search button[data-open-modal] > :not(svg) { display:none; }
+@media (min-width:1024px) {
+  :root[data-has-sidebar] { --sl-content-inline-start:var(--guide-sidebar-size); }
+  :root[data-has-sidebar][data-sidebar-open='false'] { --sl-content-inline-start:64px; }
+  .main-frame { padding-inline-start:var(--sl-content-inline-start); }
+  .sidebar { position:fixed; inset:var(--sl-nav-height) auto 0 0; width:var(--sl-content-inline-start); z-index:var(--sl-z-index-menu); background:var(--canvas); border-right:1px solid var(--border); }
+  .sidebar-pane { width:var(--guide-sidebar-size); visibility:visible; }
+  [data-sidebar-open='false'] .sidebar-pane { width:64px; }
+}
+@media (max-width:1023px) {
+  :root[data-has-sidebar] { --sl-content-inline-start:0px; }
+  .sidebar-pane { width:min(320px, calc(100vw - 48px)); visibility:hidden; border-inline-end:1px solid var(--border); }
+  [data-sidebar-open='true'] .sidebar-pane { visibility:visible; }
+  body.guide-menu-open { overflow:hidden; }
+}
+@media (min-width:72rem) {
+  [data-has-toc] .main-frame .main-pane { width:0; padding-inline:0; }
+}
+@media (max-width:799px) {
+  :root, :root[data-theme='light'] { --sl-nav-height:108px; }
+  .main-frame .main-pane { margin:16px 12px; }
+  .content-panel { padding-inline:20px; }
+}
+@media print {
+  .main-frame { padding:0; }
+  .main-frame .main-pane { margin:0; border:0; background:transparent; }
+}
+
+/* Hover controls live on the panel boundary, like UniStock. */
+.edge-toggle, .panel-resize { display:none; }
+.edge-toggle {
+  width:24px; height:24px; padding:4px; align-items:center; justify-content:center;
+  border:1px solid var(--border); border-radius:50%; background:var(--surface);
+  color:var(--muted); cursor:pointer; opacity:0; box-shadow:0 1px 3px rgb(0 0 0 / .1);
+  z-index:2;
+}
+.edge-toggle svg { width:14px; height:14px; }
+.edge-toggle:hover { background:var(--soft); color:var(--text); }
+.edge-toggle:focus-visible, .panel-resize:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.panel-resize { width:6px; cursor:col-resize; touch-action:none; z-index:1; }
+.panel-resize:hover, .panel-resize:focus-visible { background:color-mix(in srgb, var(--muted) 30%, transparent); }
+.panel-resizing, .panel-resizing * { cursor:col-resize !important; user-select:none !important; }
+@media (min-width:1024px) {
+  .edge-toggle--sidebar { z-index:7; display:flex; position:absolute; top:24px; right:-12px; }
+  .sidebar:is(:hover, :focus-within) .edge-toggle--sidebar { opacity:1; }
+  .panel-resize--sidebar { z-index:6; display:block; position:absolute; inset-block:0; right:-3px; }
+  [data-sidebar-open='false'] .edge-toggle--sidebar svg { transform:rotate(180deg); }
+  [data-sidebar-open='false'] .panel-resize--sidebar { display:none; }
+}
+@media (min-width:72rem) {
+  :root[data-toc-open='false'] { --guide-toc-width:16px; }
+  .edge-toggle--toc { display:flex; position:fixed; top:calc(var(--sl-nav-height) + 24px); right:calc(var(--guide-toc-width) - 12px); z-index:6; }
+  .right-sidebar-container:is(:hover, :focus-within) .edge-toggle--toc { opacity:1; }
+  .panel-resize--toc { display:block; position:fixed; top:var(--sl-nav-height); bottom:0; right:calc(var(--guide-toc-width) - 3px); z-index:5; }
+  .right-sidebar { background:var(--surface); }
+  [data-toc-open='false'] .right-sidebar-panel { visibility:hidden; }
+  [data-toc-open='false'] .edge-toggle--toc svg { transform:rotate(180deg); }
+  [data-toc-open='false'] .panel-resize--toc { display:none; }
+}
+@media (hover:none) { .edge-toggle { opacity:1; } }
+@media print { .edge-toggle, .panel-resize { display:none; } }
+
+@media(min-width:72rem) {
+  [data-has-toc] .right-sidebar-container { flex:0 0 var(--guide-toc-width); width:var(--guide-toc-width); }
+  [data-has-toc] .right-sidebar { width:var(--guide-toc-width); }
+  [data-has-toc] .main-pane { flex:1 1 0; min-width:0; }
+  [data-has-toc] .right-sidebar-panel .sl-container { width:100%; max-width:none; }
+}
+
+.right-sidebar-container { background:var(--surface); }

@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.svg';
+import ThemeToggle from '../theme/components/ThemeToggle.astro';
+const { guide = false } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '');
+const links = [
+  ['/LisM', '製品紹介'],
+  ['/LisM/build_guides', 'ビルドガイド'],
+  ['/LisM/firmware', 'ファームウェア'],
+  ['/LisM/how2', 'HowTo'],
+];
+---
+<div class="product-header">
+  <div class="product-identity">
+    {guide && <button type="button" class="panel-toggle" data-sidebar-toggle aria-controls="starlight__sidebar" aria-expanded="true" aria-label="メニューを格納" title="メニューを格納">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>}
+    <a class="product-logo" href="/LisM/" aria-label="LisM 製品紹介"><Image src={logo} alt="LisM" /></a>
+    <a class="product-parent" href="/">4mple Lab</a>
+  </div>
+  <nav class="product-nav" aria-label="LisM ナビゲーション">
+    {links.map(([href, label]) => <a href={`${href}/`} aria-current={path === href ? 'page' : href !== '/LisM' && path.startsWith(`${href}/`) ? 'location' : undefined}>{label}</a>)}
+  </nav>
+  <div class="product-actions"><slot name="search" /><ThemeToggle /><a class="product-shop" href="https://shop.4mple-lab.com/items/119269662" target="_blank" rel="noopener noreferrer">購入する <span aria-hidden="true">↗</span></a></div>
+</div>
+<style>
+  .product-header { position:relative; display:flex; align-items:center; gap:24px; height:64px; padding:0 24px; font-family:var(--site-font); color:var(--text); background:var(--canvas); box-sizing:border-box; }
+  .product-header::after { content:""; position:absolute; inset:auto 0 0; height:1px; background:var(--frame-border); pointer-events:none; }
+  .product-identity, .product-actions { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+  .product-actions { margin-left:16px; }
+  .product-logo { display:flex; }
+  .product-logo img { width:76px; height:32px; object-fit:contain; }
+  .product-parent { font-size:11px; color:var(--muted); border-left:1px solid var(--border); padding-left:12px; white-space:nowrap; }
+  .product-header a { text-decoration:none; }
+  .product-nav { display:flex; gap:4px; align-items:center; margin-left:auto; min-width:0; }
+  .product-nav a { font-size:13px; font-weight:500; color:var(--muted); white-space:nowrap; padding:8px 12px; border-radius:6px; }
+  .product-nav a:hover, .panel-toggle:hover { background:var(--soft); color:var(--text); }
+  .product-nav a[aria-current] { color:var(--text); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:7px; }
+  .product-shop { border:1px solid var(--border); border-radius:6px; padding:7px 12px; font-size:12px; white-space:nowrap; color:var(--text); }
+  .panel-toggle { display:grid; place-items:center; width:32px; height:32px; padding:6px; border:0; background:transparent; color:var(--muted); border-radius:6px; cursor:pointer; }
+  .panel-toggle svg { width:20px; height:20px; }
+  @media (min-width:1024px) { .panel-toggle { display:none; } }
+  .product-header :is(a, button):focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+  @media (max-width: 1100px) { .product-parent { display:none; } .product-header { gap:12px; } .product-nav a { padding-inline:9px; } }
+  @media (max-width: 799px) {
+    .product-header { height:108px; display:grid; grid-template-columns:1fr auto; grid-template-rows:60px 48px; gap:0 12px; padding:0 16px; }
+    .product-actions { gap:8px; margin-left:0; }
+    .product-identity { display:grid; grid-template-columns:auto auto; column-gap:10px; row-gap:0; }
+    .panel-toggle { grid-row:1 / 3; }
+    .product-logo { grid-column:2; }
+    .product-logo img { width:64px; height:25px; }
+    .product-parent { display:block; grid-column:2; font-size:9px; line-height:1.2; border:0; padding:0; }
+    .product-nav { grid-column:1 / -1; grid-row:2; width:100%; margin:0; justify-content:flex-end; overflow-x:auto; }
+    .product-nav a { font-size:12px; padding:8px 10px; }
+    .product-shop { padding:6px 8px; font-size:11px; }
+  }
+</style>

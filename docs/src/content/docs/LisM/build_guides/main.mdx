@@ -1,0 +1,511 @@
+---
+slug: LisM/build_guides/main
+title: LisM 本体 ビルドガイド
+description: LisM本体の組み立て手順。必要な部品・工具の確認から、基板とケースの組み立てまでを写真付きで案内します。
+---
+
+import CaseFittingNotice from '../../../../components/CaseFittingNotice.astro';
+
+import { Aside } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { LinkButton } from '@astrojs/starlight/components';
+
+## はじめに
+
+このドキュメントは、自作キーボードキット「LisM」の本体組み立て方を解説するビルドガイドです。  
+組み立てを始める前に、内容物をご確認ください。
+
+:::note[基板にはバージョンがあり、若干ビルド方法が異なります]
+基板上にバージョンが印字してあります。  
+バージョンに応じたビルドガイドに従って作業してください。
+:::
+
+---
+
+<CaseFittingNotice />
+
+### キットの内容物
+
+<Tabs syncKey="pcb_version">
+<TabItem label="ver 1.2.0">
+
+![内容物](img/main01_v1.1.0-hamekomi.png)
+
+| 部品名 | 数量 | 備考 |
+| :--- | :--- | :--- |
+| メイン基板 | 1 | |
+| Seeed Studio XIAO nRF52840 | 2 | |
+| 電源スイッチ | 2 | MSK-12C02 |
+| リセットスイッチ | 2 | SKQYACE010 |
+| JSTコネクタ | 2 | 2p SMD Horizontal |
+| JSTコネクタケーブル | 2 | 2p |
+| ソケット | 40 | Kailh Choc V1, V2用 |
+| FFC (フレキシブルフラットケーブル) | 4 | 6pin 0.5mm Forward 10cm (2枚予備) |
+| スパッジャー | 1 | FFCコネクタ用 |
+| 紙ステンシル | 2 | XIAOリフロー用 (1枚予備) |
+| [光ファイバー](https://link.amazon/B0dP7rs8L)<span class="disclosure-badge">広告</span> | 1 | 2026/09から同梱 |
+| <span class="legacy-item-label">旧仕様のみ</span> マグネット | 8 | 3mm x 1mm<br />旧マグネット式に同梱（現行は同梱なし） |
+
+</TabItem>
+<TabItem label="ver 1.1.0">
+
+![内容物](img/main01_v1.1.0.jpg)
+
+| 部品名 | 数量 | 備考 |
+| :--- | :--- | :--- |
+| メイン基板 | 1 | |
+| Seeed Studio XIAO nRF52840 | 2 | 2025/11から同梱 |
+| 電源スイッチ | 2 | MSK-12C02 |
+| リセットスイッチ | 2 | SKQYACE010 |
+| JSTコネクタ | 2 | 2p SMD Horizontal |
+| JSTコネクタケーブル | 2 | 2p  |
+| ソケット | 40 | Kailh Choc V1, V2用 |
+| FFC (フレキシブルフラットケーブル) | 4 | 6pin 0.5mm Forward 10cm (2枚予備) |
+| FFC (フレキシブルフラットケーブル) | 2 | 6pin 0.5mm Forward 5cm (予備) |
+| スパッジャー | 1 | FFCコネクタ用 |
+| 紙ステンシル | 2 | XIAOリフロー用 (1枚予備) |
+| <span class="legacy-item-label">旧仕様のみ</span> マグネット | 8 | 3mm x 1mm<br />旧マグネット式に同梱（現行は同梱なし） |
+
+</TabItem>
+<TabItem label="ver 1.0.0">
+
+![内容物](img/main01.jpg)
+
+| 部品名 | 数量 | 備考 |
+| :--- | :--- | :--- |
+| メイン基板 | 1 | |
+| 電源スイッチ | 2 | MSK-12D19 |
+| リセットスイッチ | 2 | SKQYACE010 |
+| JSTコネクタ | 2 | 2p SMD Horizontal |
+| JSTコネクタケーブル | 2 | 2p  |
+| ソケット | 40 | Kailh Choc V1, V2用 |
+| FFC (フレキシブルフラットケーブル) | 4 | 6pin 0.5mm Forward 10cm (2枚予備) |
+| FFC (フレキシブルフラットケーブル) | 2 | 6pin 0.5mm Forward 5cm (予備) |
+| スパッジャー | 1 | FFCコネクタ用 |
+| 紙ステンシル | 2 | XIAOリフロー用 (1枚予備) |
+| <span class="legacy-item-label">旧仕様のみ</span> マグネット | 8 | 3mm x 1mm<br />旧マグネット式に同梱（現行は同梱なし） |
+
+</TabItem>
+</Tabs>
+
+
+### ケース
+<Aside type="note" title="ケースをご自身で用意される方は">
+[ケースデータ](https://github.com/4mplelab/LisM/tree/main/3d-data/case)の`LisM_vx.x.x.step`をご使用ください。
+</Aside>
+
+ケースは`フローティングデザイン`と`フラットデザイン`の2種類あります。  
+
+<Tabs syncKey="case_version">
+    <TabItem label="2026.03以降">
+    スイッチプレート・マイコンカバー・電源スイッチカバーは`フローティングデザイン`と`フラットデザイン`で共通です。  
+    部品も共通のため、画像は`フラットデザイン`を使用します。  
+    ![ケース](img/main02_202603.png)
+
+    | 部品名 | モデル名 | 備考 |
+    | :--- | :--- | :--- |
+    | ボトムケース 左 | Left_BottomPart | |
+    | ボトムケース 右 | Right_BottomPart | |
+    | スイッチプレート 左 | Left_SwitchPlate | |
+    | スイッチプレート 右 | Right_SwitchPlate | |
+    | マイコンカバー 左 | Left_MCUCover | |
+    | マイコンカバー 右 | Right_MCUCover | |
+    | 電源スイッチカバー 左 | Left_PowerSwitch |  |
+    | 電源スイッチカバー 右 | Right_PowerSwitch |  |
+    | マグネットカバー | Left/Right_MagnetSpaceFiller | 左右共通 |
+    </TabItem>
+    <TabItem label="2026.02以前">
+    ボトムケース・電源スイッチカバーは共通です。
+    <Tabs>
+        <TabItem label="フローティングデザイン">
+            ![ケース](img/main02_float.jpg)
+
+            | 部品名 | モデル名 | 備考 |
+            | :--- | :--- | :--- |
+            | ボトムケース 左 | Left_BottomPart | |
+            | ボトムケース 右 | Right_BottomPart | |
+            | トップケース 左 | Left_Floating_TopPart | |
+            | トップケース 右 | Right_Floating_TopPart | |
+            | マイコンカバー 左 | Left_MCU_Cover | |
+            | マイコンカバー 右 | Right_MCU_Cover | |
+            | 電源スイッチカバー | Left/Right_Switch | 左右共通 |
+            </TabItem>
+            <TabItem label="フラットデザイン">
+            ![ケース](img/main02.jpg)
+
+            | 部品名 | モデル名 | 備考 |
+            | :--- | :--- | :--- |
+            | ボトムケース 左 | Left_BottomPart | |
+            | ボトムケース 右 | Right_BottomPart | |
+            | スイッチプレート 左 | Left_SwitchPlate | |
+            | スイッチプレート 右 | Right_SwitchPlate | |
+            | トップケース 左 | Left_TopPart | |
+            | トップケース 右 | Right_TopPart | |
+            | 電源スイッチカバー | Left/Right_Switch | 左右共通 |
+        </TabItem>
+    </Tabs>
+    </TabItem>
+</Tabs>
+
+
+---
+
+
+### 別途必要なもの
+
+
+<Tabs syncKey="pcb_version">
+<TabItem label="ver 1.2.0">
+| 部品 | 数量 | 備考 |
+| :--- | :--- | :--- |
+| バッテリー | 2 | 下記参照 |
+| キースイッチ | 40 | Kailh Choc V1 または V2 |
+| キーキャップ | 40 | 16.5mm x 16.5mm以下を推奨 |
+| USB-C ケーブル | 1 | PCとの接続用 |
+| <span class="optional-label">任意</span> 滑り止め | - | [GRIPLUS（グリップラス）](https://link.amazon/B0e3jILCp)<span class="disclosure-badge">広告</span>がオススメ |
+| <span class="optional-label">任意</span> 左右連結用マグネット 10x1mm | 8 | [共計技研 N54マグネット](https://link.amazon/B03loZTkU)<span class="disclosure-badge">広告</span>がオススメ<br />(オプション未選択の方)  |
+| <span class="optional-label">任意</span> 接着剤 | - | マグネット固定用 ([オススメ](https://link.amazon/B00IsKbqJ)<span class="disclosure-badge">広告</span>) |
+
+**バッテリーについて**  
+組み立てオプション OP3-A / OP3-Bをご利用されない場合、下記いずれかをご用意ください。  
+
+- 3.7V リチウムポリマーバッテリー（302025型〜302040型）
+- リチウムイオンコインバッテリー LIR1655 保護回路基板
+</TabItem>
+
+<TabItem label="ver 1.1.0">
+| 部品 | 数量 | 備考 |
+| :--- | :--- | :--- |
+| 3.7Vリチウムポリマーバッテリー | 2 | 302040 ~ 302030型を推奨 (組み立てOP3を選択された方は取り付け済)|
+| キースイッチ | 40 | Kailh Choc V1 または V2 |
+| キーキャップ | 40 | 16.5mm x 16.5mm以下を推奨 |
+| USB-C ケーブル | 1 | PCとの接続用 |
+| <span class="optional-label">任意</span> 滑り止め | - | [GRIPLUS（グリップラス）](https://link.amazon/B0e3jILCp)<span class="disclosure-badge">広告</span>がオススメ |
+| <span class="optional-label">任意</span> 左右連結用マグネット 10x1mm | 8 | [共計技研 N54マグネット](https://link.amazon/B03loZTkU)<span class="disclosure-badge">広告</span>がオススメ |
+| <span class="optional-label">任意</span> 接着剤 | - | マグネット固定用 ([オススメ](https://link.amazon/B00IsKbqJ)<span class="disclosure-badge">広告</span>) |
+
+</TabItem>
+<TabItem label="ver 1.0.0">
+| 部品 | 数量 | 備考 |
+| :--- | :--- | :--- |
+| Seeed Studio XIAO nRF52840 | 2 | 組み立てOP2, 3, 4 を選択された方はキットに同梱 |
+| 3.7Vリチウムポリマーバッテリー | 2 | 302035型 or 302030型を推奨 (組み立てOP4を選択された方はキットに同梱)|
+| キースイッチ | 40 | Kailh Choc V1 または V2 |
+| キーキャップ | 40 | 16.5mm x 16.5mm以下を推奨 |
+| USB-C ケーブル | 1 | PCとの接続用 |
+| <span class="optional-label">任意</span> 滑り止め | - | [GRIPLUS（グリップラス）](https://link.amazon/B0e3jILCp)<span class="disclosure-badge">広告</span>がオススメ |
+| <span class="optional-label">任意</span> 左右連結用マグネット 10x1mm | 8 | [共計技研 N54マグネット](https://link.amazon/B03loZTkU)<span class="disclosure-badge">広告</span>がオススメ |
+| <span class="optional-label">任意</span> 接着剤 | - | マグネット固定用 ([オススメ](https://link.amazon/B00IsKbqJ)<span class="disclosure-badge">広告</span>) |
+
+</TabItem>
+</Tabs>
+---
+
+### 必要な工具
+
+*   はんだごて
+*   はんだ
+*   ピンセット
+*   ニッパー
+*   ドライバー (+)
+*   やすり
+
+**リフローを行う場合:**
+
+| 工具名 | 備考 |
+| :--- | :--- |
+| はんだペースト | 低温 or 中温 ([参考](https://link.amazon/B09atMMZn)<span class="disclosure-badge">広告</span>) |
+| はんだペースト用工具 | ヘラ、スキージー、プラスチックカードなど |
+| ホットプレート | [私が使用している物](https://link.amazon/B0bLOxgXd)<span class="disclosure-badge">広告</span> |
+
+--- 
+
+## 組み立て手順
+
+<Aside type="note" title="組み立てオプションに応じて必要な項目をご参照ください">
+</Aside>
+
+<Aside type="tip" title="参考: 組み立て配信動画">
+VTuberの `にょろ` 様が、実際の組み立て配信を行ってくださいました。  
+全体の流れをつかみたい方はあわせてご覧ください。
+
+<div class="video-embed">
+  <iframe
+    src="https://www.youtube.com/embed/__yzm6vqnpg"
+    title="LisM 組み立て配信"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+  ></iframe>
+</div>
+</Aside>
+
+### 1. XIAOとJSTコネクタのリフロー
+
+メイン基板にXIAOとコネクタをリフローで取り付けます。**(v1.1.0以降は電源スイッチも)**  
+コネクタや電源スイッチは通常のはんだごてでも取り付け可能ですが、XIAOはリフローが必須です。
+
+1.  付属の紙ステンシルを基板の指定の場所にテープなどでしっかりと固定します。  
+    基板とステンシルの間に浮きがないように注意してください。  
+    ![ステンシル固定](img/main-build01-01.jpeg)
+2.  ステンシルの上からヘラなどではんだペーストを塗布します。  
+    ![はんだペースト塗布](img/main-build01-02.jpeg)  
+3.  ステンシルをゆっくりと剥がし、XIAO・コネクタ・電源スイッチを所定の位置に載せます。  
+
+    <Aside type="tip" title="ブリッジしてしまった場合は、爪楊枝でブリッジ箇所のはんだを取り除いてください">
+    特に背面パッド(BAT, RESET)がブリッジしていると致命的です。
+    </Aside>
+
+    ![XIAO配置](img/main-build01-03.jpg)
+
+    <Aside type="caution" title="XIAOは載せた後はなるべく動かさない">
+    背面のRESETパッドがブリッジしやすいです。
+    </Aside>
+
+4.  ホットプレートで加熱し、リフローを行います。  
+    温度や時間は、使用するはんだペーストの仕様に従ってください。  
+    ![リフロー](img/main-build01-04.jpeg)  
+
+    <Aside type="caution" title="裏面のダイオードがホットプレートに当たらないように注意してください">
+    </Aside>
+
+    <Aside type="note" title="リセットがショートしていないか確認">
+    テスターを使用して、基板裏のリセットボタン部分がショートしていないか確認することをお勧めします。  
+    ショートしている場合、XIAOの背面パッド(RESET)がブリッジしている可能性が高いので、再リフローしてください。  
+    ![リセット確認](img/main-build01-05.jpg)
+    </Aside>
+
+### 2. 基板の切り離し
+1. ペンチなどで折り、左右に分割してください。  
+   固い場合は、カッターで軽く切り込みを入れると割りやすくなります。  
+   ![基板の分割](img/main-build02-01.jpg)
+
+1. 分割した部分をやすりで滑らかに整えてください。  
+   ![やすりがけ](img/main-build02-02.jpeg)
+
+### 3. 各種部品のはんだ付け
+
+#### キーソケット
+1. 基板のシルク（印字）に合わせて、すべてのソケットをはんだ付けします。  
+   ![キーソケットのはんだ付け](img/main-build03-socket.jpg)
+
+#### リセットスイッチ
+
+<Aside type="note" title="XIAO上のリセットスイッチを使用する場合は取り付け不要です。">
+このスイッチを取り付けると、ケースを付けたまま底面からアクセスできます。
+</Aside>
+
+1. XIAOの裏`SW_REST1`へスイッチの両端をはんだ付けしてください。  
+   ![リセットスイッチのはんだ付け](img/main-build03-rest.jpeg)
+
+<details class="details-card">
+    <summary>(v1.0.0のみ) 電源スイッチ</summary>
+   1. マスキングテープなどで位置を固定し、裏側から足をはんだ付けします。  
+      ![電源スイッチのはんだ付け](img/main-build03-switch.jpg)
+      
+   2. ケースと干渉するため、はんだ付け後にはみ出た足はニッパーでカットしてください。
+</details>
+
+
+### 4. バッテリーの準備
+
+<Aside type="note" title="ご用意いただいたバッテリーにJST 1.25 2pinコネクタが付いている場合、この作業は不要です">
+コネクタが付いていない場合は、付属のJSTコネクタケーブルをはんだ付けして準備します。  
+</Aside>
+
+<Aside type="caution" title="バッテリーがショートしないように注意して作業してください">
+</Aside>
+
+1. 同梱のコネクタ付き配線を2cm程度の長さでカットして被覆を剥いてください。  
+   ![配線のカット](img/main-build04-01.jpeg)
+2. (必要に応じて)予備はんだを付けてください。  
+   ![予備はんだ](img/main-build04-02.jpg)
+3. 収縮チューブを通した後、バッテリーの配線とはんだ付けしてください。
+   ![バッテリー配線のはんだ付け](img/main-build04-03.jpg)  
+4. 収縮チューブで絶縁してください。  
+   配線の長さは、合計で3~4cm程度が理想です。  
+   ![収縮チューブでの絶縁](img/main-build04-04.jpeg)
+
+### 5. FFCケーブルの取り付け
+
+<Aside type="caution" title="FFCコネクタのアクチュエータは壊れやすいのでご注意ください">
+</Aside>
+
+1. 10cmのFFCをコネクタに取り付けてください。  
+   (モジュールを固定で使用する場合は5cmのFFCを使用してもOKです。)  
+    ![FFC](img/main-build05-01.jpeg)
+
+2. 画像のようにケーブルを折り曲げておくと、ケース内で取り回しがしやすくなります。    
+    ![FFC_bend](img/main-build05-02.jpeg)
+
+### 6. ケースの組み立て
+
+<Tabs syncKey="case_version">
+<TabItem label="2026.03以降">
+#### 6-1 ボトムケース
+1. 左右連結用マグネット(10mm x 1mm)  
+    <Tabs>
+        <TabItem label="取り付ける場合">
+        1. 左右が引っ付くように極性に注意して左右4ヶ所ずつ押し込んで取り付けてください。  
+            ![magnet_set](img/main-build06-202603-bottom-mag01.jpeg)  
+        </TabItem>
+        <TabItem label="取り付けない場合">
+        1. マグネットカバーを左右4ヶ所ずつ押し込んで取り付けてください。  
+           取り外し用の切り欠きの向きはどの向きでも問題ありません。  
+            ![magnet_set](img/main-build06-202603-bottom-mag02.jpeg)  
+        </TabItem>
+    </Tabs>
+
+<details class="details-card">
+<summary>旧マグネット式ケースのみ：3mmマグネットの取り付け（左右各4個）</summary>
+
+ボトムケースのモジュール部分にマグネットを取り付けます。  
+定規などで押さえて取り付けてください。
+
+<Aside type="caution" title="マグネットの極性に注意">
+</Aside>
+
+<Aside type="tip" title="底面同士を引っ付けるには">
+左右の全てを同じ極性にしてしまうと、底面を合わせると反発して引っ付けることができません。  
+そこで、以下のポストのようにマグネットを取り付けると解決できます。  
+
+<blockquote class="twitter-tweet">
+    <p lang="ja" dir="ltr">LisMユーザから超天才的アドバイスをいただきました😳… <a href="https://t.co/r5x44dZB4e" target="_blank" rel="noopener noreferrer">pic.twitter.com/r5x44dZB4e</a></p>&mdash; 4mple (シンプル) (@4mple_) <a href="https://twitter.com/4mple_/status/2049361852078170304?ref_src=twsrc%5Etfw" target="_blank" rel="noopener noreferrer">April 29, 2026</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>    
+</Aside>
+
+
+<Aside type="tip" title="穴が大きい・小さい">
+印刷精度や素材によっては穴が大きく緩い場合があるため、必要に応じて接着剤で固定してください。  
+逆に穴が小さくきつい場合は、はんだごてで拡張してください。
+</Aside>
+  
+![magnet_set](img/main-build06-202603-01.jpeg)  
+![magnet_scale](img/main-build06-202603-02.jpeg)
+
+</details>
+
+2.  バッテリーを置き、電源スイッチカバーをボトムケースに取り付けます。  
+    電源スイッチカバーはOFF側(手前側)に緑がくるように取り付けてください。  
+    ![pwr_switch](img/main-build06-202603-03.jpeg)  
+
+3.  電源スイッチと電源スイッチカバーの位置を合わせ、組み立てた基板をケースに載せます。  
+    ![基板の配置](img/main-build06-202603-04.jpeg)  
+    ![基板の配置](img/main-build06-202603-05.jpeg)
+
+4. 赤丸箇所を押し込み(初回は固いです)、バッテリーを接続します。  
+    ![バッテリー](img/main-build06-202603-06.jpeg)
+
+   
+    <Aside type="caution" title="電源OFF・極性確認！！">
+        接続前に電源がOFFになっていること、  
+        基板の印字`+`とバッテリーの`赤`線が接続されることを確認してください。  
+        ![warn_battery_line](img/main-build06-202603-07.png)
+    </Aside>
+
+#### 6-2 スイッチプレート・マイコンカバー
+1. スイッチプレートを載せ、ツメ8箇所で固定します。
+    ![switch_plate](img/main-build06-202603-08.jpeg)  
+    ![ツメ](img/main-build06-202603-tsume.png)
+
+    <Aside type="caution" title="ツメは折れやすいので注意！！">
+     上から押し込むと折れやすいです。  
+     スイッチプレートの中央部を山なりにして挿入すると折れにくいです。
+     ![やまなり](img/main-build06-202603-yama.png)
+    </Aside>
+
+2. <span class="optional-label">任意</span> マイコンカバーのLED穴へ光ファイバーを挿入  
+
+    <Aside type="tip" title="参考: 光ファイバーあり/なし比較">
+    にょろ様の投稿にあるように、光ファイバーを挿入すると接続状況の視認性が向上します。  
+    この手順を行わず、穴が空いた状態のままでもご使用いただけます。
+
+    <blockquote class="twitter-tweet" data-media-max-width="900">
+      <p lang="ja" dir="ltr">〝LisM〟<br/><br/>光ファイバーが挿さった新しいカバーをご提供頂きました❕<br/><br/>いつもの作業定位置からキーボードまで距離があり接続状況が視認し辛い場面がありましたのでこういうアップデートは1ユーザーとしてとても嬉しいです✨<br/><br/>かなり見やすくなってますので動画をチェックしてみてください❕ <a href="https://t.co/Hwmj9hui8R" target="_blank" rel="noopener noreferrer">https://t.co/Hwmj9hui8R</a> <a href="https://t.co/nwoC2l0bc3" target="_blank" rel="noopener noreferrer">pic.twitter.com/nwoC2l0bc3</a></p>&mdash; Nyoro (@Nyoro_keyboard) <a href="https://x.com/Nyoro_keyboard/status/2088471243242795245?ref_src=twsrc%5Etfw" target="_blank" rel="noopener noreferrer">August 15, 2026</a>
+    </blockquote> <script async src="https://platform.x.com/widgets.js" charset="utf-8"></script>
+    </Aside>
+
+    1. 光ファイバーの先端へ接着剤を塗布し、カバーの裏から挿入してください。  
+       ツライチより少し入ったくらいが理想です。  
+       ![fiber](img/main-build06-202609-fiber01.jpeg)
+
+    2. 固定されたら、1~1.5mmほど残してニッパーなどで切ってください。
+       ![fiber](img/main-build06-202609-fiber02.jpeg)
+
+3. マイコンカバーを載せ、押さえて嵌めます。  
+    ![mcu_cover](img/main-build06-202603-mcucover.png)
+
+</TabItem>
+<TabItem label="2026.02以前">
+#### 6-1 ボトムケース
+1.  ボトムケースのモジュール部分にマグネットを取り付けます。  
+   
+    <Aside type="caution" title="マグネットの極性に注意">
+    </Aside>
+
+    <Aside type="tip" title="穴が大きい・小さい">
+    印刷精度や素材によっては穴が大きく緩い場合があるため、必要に応じて接着剤で固定してください。  
+    逆に穴が小さくきつい場合は、はんだごてで拡張してください。
+    </Aside>
+
+    定規などで押さえて取り付けてください。   
+    ![magnet_set](img/main-build06-01.jpeg)  
+    ![magnet_scale](img/main-build06-02.jpeg)  
+    ![magnet_one](img/main-build06-03.jpeg)  
+    ![magnet_all](img/main-build06-04.jpeg)
+
+
+2.  電源スイッチにスイッチカバーを取り付けます。  
+    OFF側(手前側)に緑がくるように取り付けてください。  
+    ![pwr_switch](img/main-build06-05.jpeg)
+3.  ボトムケースにバッテリーを置きます。  
+    必要に応じて両面テープで固定し、キースイッチやキーソケットから保護してください。
+    ![battery](img/main-build06-06.jpeg)
+4.  組み立てた基板を載せ、バッテリーを接続します。  
+    ![基板の配置](img/main-build06-07.jpeg)
+
+
+    <Aside type="caution" title="電源OFF・極性確認！！">
+        接続前に電源がOFFになっていること、  
+        基板の印字`+`とバッテリーの`赤`線が接続されることを確認してください。  
+        ![warn_battery_line](img/main-build06-08.jpeg)
+    </Aside>
+
+#### 6-2 トップケース
+<Tabs>
+<TabItem label="フローティングデザイン">
+1. トップケースをスイッチ側からひっかけるようにして装着し、ボトムケースにはめ込みます。  
+    ![top_case](img/main-build06-float01.jpeg)
+   
+2. マイコンカバーを載せ、四隅を押さえて嵌めます。  
+    ![mcu_cover](img/main-build06-float02.jpeg)
+</TabItem>
+<TabItem label="フラットデザイン">
+1.  スイッチプレートを載せます。  
+    ![on_switch_plate](img/main-build06-09.jpeg)
+2.  トップケースをスイッチ側からひっかけるようにして装着し、ボトムケースにはめ込みます。  
+    ![top_case1](img/main-build06-10.jpg)
+
+3.  最後に、手前のモジュール部分を軽く押さえて固定します。  
+    ![top_case3](img/main-build06-12.jpg)
+</TabItem>
+</Tabs>
+
+</TabItem>
+</Tabs>
+
+### 7. FFCケーブル収納
+1. 画像を参考に引き出しやすい折り方で収納してください。  
+   ![FFCケーブルの収納1](img/main-build07-01.jpeg)
+   ![FFCケーブルの収納2](img/main-build07-02.jpeg)
+   
+
+### 8. 仕上げ
+お好みのキースイッチとキーキャップを取り付けて完成です。
+
+---
+
+## ファームウェアの書き込み
+PCに接続してファームウェアを書き込みます。  
+使用するモジュールに応じて、書き込むファームウェアが異なります。  
+詳細は[`ファームウェア`](../../firmware)を参照してください。

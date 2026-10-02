@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LisM カラーパレット</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; padding: 40px; background: var(--bg); color: var(--text); font: 16px/1.7 system-ui,sans-serif; }
+main { max-width: 1100px; margin: auto; }
+header { display:flex; justify-content:space-between; gap:24px; align-items:center; }
+button { padding: 10px 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--soft); color: var(--text); cursor:pointer; }
+h1 { font-size: 28px; } h2 { margin-top:40px; font-size:20px; }
+p { color:var(--muted); }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; }
+article { border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.swatch { height:90px; background:var(--swatch); border-bottom:1px solid var(--border); }
+.label { padding:16px; } strong,code,small { display:block; } code,small { color:var(--muted); }
+.notice { padding:16px; margin-top:14px; border-left:4px solid var(--notice); background:color-mix(in srgb,var(--notice) 8%,transparent); }
+.notice strong { color:var(--notice); }
+@media(max-width:600px){body{padding:20px}header{align-items:start;flex-direction:column}}
+</style>
+<main>
+<header><div><h1>LisM カラーパレット</h1><p>tokens.cssを直接参照するテーマ用見本。ボタンでライト／ダークを比較できます。</p></div><button type="button" id="toggle">ダークへ切り替え</button></header>
+<h2>ブランドとアクセント</h2><div class="grid" id="brand"></div>
+<h2>モノトーン</h2><div class="grid" id="neutral"></div>
+<h2>意味を持つ色</h2><div class="grid" id="semantic"></div>
+<h2>ノート・警告の背景</h2><p>背景だけを8%に薄め、文字・アイコン・左の線は不透明で表示します。</p>
+<div id="notices"></div>
+<p>ロゴの原色は固定。見出し・リンクのアクセントと意味色はテーマに追従します。本文と通常のボタンはモノトーンを基調にします。</p>
+</main>
+<script>
+const groups = {
+ brand: [['brand','ロゴ原色（固定）'],['accent','見出し・リンク'],['accent-hover','アクセントの強調用'],['on-accent','塗りつぶしアクセント上の文字'],['accent-soft','アクセント背景']],
+ neutral: [['bg','ページ背景'],['soft','補助背景'],['text','本文'],['muted','補足文字'],['border','罫線'],['header','ヘッダー背景']],
+ semantic: [['note','ノート・情報'],['tip','ヒント・補足'],['caution','注意'],['danger','危険・エラー']]
+};
+function render() {
+ const style = getComputedStyle(document.documentElement);
+ for (const [id, entries] of Object.entries(groups)) {
+  document.getElementById(id).innerHTML = entries.map(([token,label]) => `<article><div class="swatch" style="--swatch:var(--${token})"></div><div class="label"><strong>${label}</strong><code>--${token}</code><small>${style.getPropertyValue('--'+token).trim()}</small></div></article>`).join('');
+ }
+ document.getElementById('notices').innerHTML = groups.semantic.map(([token,label])=>`<div class="notice" style="--notice:var(--${token})"><strong>${label}</strong>ここに補足や注意事項が入ります。</div>`).join('');
+}
+document.getElementById('toggle').addEventListener('click', () => {
+ const dark = document.documentElement.dataset.theme !== 'dark';
+ document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+ document.getElementById('toggle').textContent = dark ? 'ライトへ切り替え' : 'ダークへ切り替え';
+ render();
+});
+render();
+</script>
+</html>

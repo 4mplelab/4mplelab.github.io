@@ -1,0 +1,15 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.svg';
+---
+<div class="guide-brand">
+  <a class="lab-link" href="/">4mple Lab</a>
+  <a class="product-link" href="/LisM/" aria-label="LisM 製品紹介"><Image src={logo} alt="LisM" /></a>
+</div>
+<style>
+.guide-brand { display:flex; align-items:center; gap:1rem; min-width:0; }
+.lab-link { font-size:var(--sl-text-xs); color:var(--sl-color-gray-2); text-decoration:none; white-space:nowrap; }
+.lab-link:hover { color:var(--sl-color-white); }
+.product-link { display:flex; min-width:0; border-inline-start:1px solid var(--sl-color-hairline); padding-inline-start:1rem; }
+.product-link img { height:calc(var(--sl-nav-height) - 2 * var(--sl-nav-pad-y)); width:auto; max-width:100%; }
+</style>

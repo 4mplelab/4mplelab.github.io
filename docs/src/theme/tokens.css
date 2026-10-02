@@ -1,0 +1,43 @@
+/* Shared palette for product pages and documentation. */
+:root {
+  --site-font: 'Roboto', 'Zen Kaku Gothic New', sans-serif;
+  color-scheme: light;
+  --canvas: #f0f0f0;
+  --surface: #fafafa;
+  --bg: #fafafa;
+  --text: #222222;
+  --soft: #f5f5f5;
+  --muted: #686868;
+  --brand: #9a0000;
+  --accent: #9a0000;
+  --accent-hover: #750000;
+  --on-accent: #ffffff;
+  --accent-soft: rgb(154 0 0 / .08);
+  --note: #315fa8;
+  --tip: #7653a6;
+  --caution: #906200;
+  --danger: #b42336;
+  --border: #e2e2e2;
+  --frame-border: rgb(0 0 0 / .06);
+  --header: var(--canvas);
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #181818;
+  --surface: #222222;
+  --bg: #222222;
+  --text: #e8e8e8;
+  --soft: #292929;
+  --muted: #b5b5b5;
+  --accent: #e87979;
+  --accent-hover: #f29a9a;
+  --on-accent: #181818;
+  --accent-soft: rgb(232 121 121 / .12);
+  --note: #8eb8f0;
+  --tip: #c0a0ea;
+  --caution: #e8bc60;
+  --danger: #f19ba7;
+  --border: #333333;
+  --frame-border: rgb(255 255 255 / .06);
+  --header: var(--canvas);
+}

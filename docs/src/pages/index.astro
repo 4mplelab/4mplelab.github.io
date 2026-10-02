@@ -1,0 +1,24 @@
+---
+import BrandPage from '../layouts/BrandPage.astro';
+import { Image } from 'astro:assets';
+import keyboard from '../assets/product/20261002_180000_hero-white.png';
+import ProductPlaceholder from '../components/ProductPlaceholder.astro';
+const upcoming = [
+ { name: 'LisM Pro', description: 'LisMの使い心地を受け継ぎ、さらに可能性を広げるモデル。詳細は公開までお待ちください。' },
+ { name: 'LisM Air', description: 'LisMの新しいかたち。これまでとは異なるアプローチで、開発を進めています。詳細は公開までお待ちください。' },
+];
+---
+<BrandPage title="Less is More." description="4mple Labの製品紹介とドキュメント。キーボードの特徴、組み立て方、使い方をご案内します。">
+<section class="hero"><p class="eyebrow">4MPLE LAB</p><h1>自分に合う道具を<br />見つける つくる</h1><p class="lead">4mple Labの製品と、その使い方。<br />製品の紹介から組み立て・カスタマイズまで。</p></section>
+<section class="card"><div><p class="eyebrow">SPLIT KEYBOARD</p><h2>LisM</h2><p>親指の1Uを自分らしく。<br />左右それぞれのモジュールを交換できる、コンパクトな分割キーボード。</p><div class="links"><a href="/LisM/">製品紹介 →</a><a href="/LisM/build_guides/">ビルドガイド →</a></div></div><Image class="top-product-photo" src={keyboard} alt="モジュールを交換できる分割キーボードLisM" loading="eager" /></section>
+{upcoming.map(product => <section class="card upcoming-card" aria-label={product.name}>
+ <div><p class="eyebrow">IN DEVELOPMENT</p><h2>{product.name}</h2><p>{product.description}</p>
+  <div class="links"><button type="button" disabled>製品紹介</button><button type="button" disabled>ビルドガイド</button></div><p class="availability">公開準備中</p>
+ </div>
+ <ProductPlaceholder name={product.name} />
+</section>)}
+</BrandPage>
+<style>
+ .links button { font:inherit; font-size:14px; padding:10px 16px; border:1px solid var(--border); border-radius:6px; background:var(--canvas); color:var(--muted); opacity:.5; cursor:not-allowed; }
+ .availability { font-size:12px; margin-bottom:0; }
+</style>

@@ -1,0 +1,5 @@
+---
+import Pagination from '@astrojs/starlight/components/Pagination.astro';
+const isBuildGuide = /^\/LisM\/build_guides(?:\/|$)/.test(Astro.url.pathname);
+---
+{!isBuildGuide && <Pagination />}

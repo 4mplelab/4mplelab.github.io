@@ -1,0 +1,9 @@
+---
+import Search from 'virtual:starlight/components/Search';
+import ProductHeader from './ProductHeader.astro';
+---
+<ProductHeader guide={Astro.locals.starlightRoute.hasSidebar}><Search slot="search" /></ProductHeader>
+<button class="sidebar-backdrop" data-sidebar-backdrop tabindex="-1" aria-label="メニューを閉じる" hidden></button>
+<script>
+  import '../theme/sidebar';
+</script>

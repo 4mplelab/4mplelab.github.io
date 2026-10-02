@@ -1,0 +1,43 @@
+ <script is:inline>
+  (() => {
+   try { document.documentElement.dataset.sidebarOpen = String(window.matchMedia('(min-width: 1024px)').matches && localStorage.getItem('lism.sidebar-collapsed') !== 'true'); } catch {}
+   try {
+    document.documentElement.dataset.tocOpen = String(localStorage.getItem('lism.toc-collapsed') !== 'true');
+    for (const [side, min, max] of [['sidebar', 200, 390], ['toc', 160, 292.5]]) {
+     let width = Number(localStorage.getItem(`lism.${side}-width`));
+     if (side === 'sidebar' && width === 280) width = 260;
+     if (width > 0 && Number.isFinite(width)) document.documentElement.style.setProperty(`--guide-${side}-size`, `${Math.min(max, Math.max(min, width))}px`);
+    }
+   } catch {}
+   const media = window.matchMedia('(prefers-color-scheme: dark)');
+   let preference = 'auto';
+   try { preference = localStorage.getItem('starlight-theme') || 'auto'; } catch {}
+   const apply = () => {
+    document.documentElement.dataset.theme = preference === 'dark' || (preference !== 'light' && media.matches) ? 'dark' : 'light';
+   };
+   apply();
+   media.addEventListener('change', apply);
+   document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('[data-theme-toggle]');
+    const modes = ['light', 'dark', 'auto'];
+    const labels = { light: 'ライト', dark: 'ダーク', auto: '自動' };
+    if (!modes.includes(preference)) preference = 'auto';
+    const updateButton = () => {
+     const next = modes[(modes.indexOf(preference) + 1) % modes.length];
+     const label = `外観：${labels[preference]}（クリックで${labels[next]}へ）`;
+     buttons.forEach((button) => {
+     button.dataset.mode = preference;
+     button.setAttribute('aria-label', label);
+     button.querySelector('.tooltip').textContent = label;
+     });
+    };
+    updateButton();
+    buttons.forEach((button) => button.addEventListener('click', () => {
+     preference = modes[(modes.indexOf(preference) + 1) % modes.length];
+     try { localStorage.setItem('starlight-theme', preference === 'auto' ? '' : preference); } catch {}
+     apply();
+     updateButton();
+    }));
+   });
+  })();
+ </script>

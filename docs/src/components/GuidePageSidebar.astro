@@ -1,0 +1,6 @@
+---
+import Default from '@astrojs/starlight/components/PageSidebar.astro';
+import PanelControls from './PanelControls.astro';
+---
+<Default />
+{Astro.locals.starlightRoute.toc && <PanelControls panel="toc" />}
