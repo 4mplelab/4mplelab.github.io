@@ -21,6 +21,13 @@ const { title, description } = Astro.props;
 <meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="4mple Lab — Less is More." />
 <meta name="twitter:card" content="summary_large_image" />
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-C13DXFJ6RG"></script>
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){window.dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-C13DXFJ6RG');
+</script>
 <ThemeInit />
 </head>
 <body>
