@@ -43,7 +43,7 @@ description: LisMのトラックボールユニット (20mm)の組み立て手�
 
 | 部品 | 数量 | 備考 |
 | :--- | :--- | :--- |
-| 接着剤 | 1 |  |
+| 接着剤 | 1 | ([オススメ](https://link.amazon/B00IsKbqJ)<span class="disclosure-badge">広告</span>) |
 
 ---
 
